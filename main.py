@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def mainWork():
+    return "Integration Ran Successfull"
 '''
     username = "prabhu@relanto.ai"
     password = "Anaplan@April2023"
@@ -251,7 +252,7 @@ def mainWork():
                                 elif auth_json5['task']['currentStep'] == "Complete.":
                                     print("Complete")
                                     Flag = False
-    '''
-    return "Integration Ran Successfull"
+'''
+    
 if __name__ == '__main__':
     app.run()
