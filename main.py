@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def mainWork():
+'''
     username = "prabhu@relanto.ai"
     password = "Anaplan@April2023"
     
@@ -20,7 +21,7 @@ def mainWork():
     ).json()
     if auth_json['status'] == 'SUCCESS':
         authToken = 'AnaplanAuthToken ' + auth_json['tokenInfo']['tokenValue']
-        #print("19" + auth_json['status'])
+        print("19" + auth_json['status'])
         
         '''Token Validation'''
         auth_url = 'https://auth.anaplan.com/token/validate'
@@ -30,10 +31,10 @@ def mainWork():
                 'Authorization': authToken
             }
         ).json()
-        #print("29" + auth_json2['status'])
+        print("29" + auth_json2['status'])
         if auth_json2['status'] == 'SUCCESS':
             expiresAt = auth_json2['tokenInfo']['expiresAt']
-            #print("32" + auth_json2['status'])
+            print("32" + auth_json2['status'])
             
             ExportProcess = "Export_from_anaplan"
         
@@ -45,12 +46,12 @@ def mainWork():
                     'Authorization': authToken
                 }
             ).json()
-            #print("44" + auth_json3['status']['message'])
+            print("44" + auth_json3['status']['message'])
             if auth_json3['status']['message'] == 'Success':
                 for process in auth_json3['processes']:
                     if ExportProcess == process['name']:
                         processID = process['id']
-                        #print("49" + processID)
+                        print("49" + processID)
                         '''Starting the Process'''
                         auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks"
                         auth_json4 = requests.post(
@@ -61,10 +62,10 @@ def mainWork():
                             },
                             data = json.dumps({'localeName': 'en_US'})
                         ).json()
-                        #print("60"+auth_json4['status']['message'])
+                        print("60"+auth_json4['status']['message'])
                         if auth_json4['status']['message'] == 'Success':
                             taskID = auth_json4['task']['taskId']
-                            #print("63"+taskID)
+                            print("63"+taskID)
                             '''Checking the Status of the Process'''
                             Flag = True
                             while Flag:
@@ -77,10 +78,11 @@ def mainWork():
                                     }
                                 ).json()
                                 if auth_json5['task']['currentStep'] == "Failed.":
-                                    #print("Failed")
-                                    Flag = False
+                                    print("Failed")
+                                elif auth_json5['task']['currentStep'] != "Complete.":
+                                    print(auth_json['task']['currentStep'])
                                 elif auth_json5['task']['currentStep'] == "Complete.":
-                                    #print("Complete")
+                                    print("Complete")
                                     Flag = False
                             
             '''Get files from anaplan'''
@@ -92,7 +94,7 @@ def mainWork():
                 }
             )
             getFileData_json = getFileData.json()
-            #print("92"+ getFileData_json['status']['message'])
+            print("92"+ getFileData_json['status']['message'])
 
             if getFileData_json['status']['message'] == 'Success':
                 file_info = getFileData_json['files'];
@@ -153,7 +155,7 @@ def mainWork():
                              
                                 #df['Predict'] = 5
                 csv = predictions.to_csv()
-                #print(csv)
+                print(csv)
                 
                 for file in file_info:
                     if file['name'] == "Google_Demo_import.csv":
@@ -171,8 +173,8 @@ def mainWork():
                         )
                         getFileData1 = getFileData1.json()
 
-                        #if getFileData1['status']['message'] == 'Success':
-                            #print(f"Setting chunk count to -1 for {file['name']} COMPLETED")
+                        if getFileData1['status']['message'] == 'Success':
+                            print(f"Setting chunk count to -1 for {file['name']} COMPLETED")
                         
                         #csv = df.to_csv()
                         tempFileName = file['name']
@@ -187,7 +189,7 @@ def mainWork():
                             },
                             data = csv
                         )
-                        #print(f"'{tempFileName}' Upload Completed")
+                        print(f"'{tempFileName}' Upload Completed")
                         
                         url = f'https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/files/{fileID}/complete'
                         fileCompleteResponse = requests.post(
@@ -200,8 +202,8 @@ def mainWork():
                         )
                         fileCompleteResponse = fileCompleteResponse.json()
 
-                        #if fileCompleteResponse['status']['message'] == "Success":
-                            #print(f"{tempFileName} started MARKED as complete")
+                        if fileCompleteResponse['status']['message'] == "Success":
+                            print(f"{tempFileName} started MARKED as complete")
             
             '''Getting Process from Anaplan'''
             auth_url = 'https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes'
@@ -211,12 +213,12 @@ def mainWork():
                     'Authorization': authToken
                 }
             ).json()
-            #print("180" + auth_json3['status']['message'])
+            print("180" + auth_json3['status']['message'])
             if auth_json3['status']['message'] == 'Success':
                 for process in auth_json3['processes']:
                     if "Import_to_anaplan" == process['name']:
                         processID = process['id']
-                        #print("185" + processID)
+                        print("185" + processID)
                         '''Starting the Process'''
                         auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks"
                         auth_json4 = requests.post(
@@ -227,10 +229,10 @@ def mainWork():
                             },
                             data = json.dumps({'localeName': 'en_US'})
                         ).json()
-                        #print("196"+auth_json4['status']['message'])
+                        print("196"+auth_json4['status']['message'])
                         if auth_json4['status']['message'] == 'Success':
                             taskID = auth_json4['task']['taskId']
-                            #print("199"+taskID)
+                            print("199"+taskID)
                             '''Checking the Status of the Process'''
                             Flag = True
                             while Flag:
@@ -243,9 +245,13 @@ def mainWork():
                                     }
                                 ).json()
                                 if auth_json5['task']['currentStep'] == "Failed.":
-                                    Flag = False
+                                    print("Failed")
+                                elif auth_json5['task']['currentStep'] != "Complete.":
+                                    print(auth_json['task']['currentStep'])
                                 elif auth_json5['task']['currentStep'] == "Complete.":
+                                    print("Complete")
                                     Flag = False
+    '''
     return "Integration Ran Successfull"
 if __name__ == '__main__':
     app.run()
