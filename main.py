@@ -24,7 +24,7 @@ def mainWork():
         authToken = 'AnaplanAuthToken ' + auth_json['tokenInfo']['tokenValue']
         print("19" + auth_json['status'])
         
-        '''Token Validation'''
+        #Token Validation
         auth_url = 'https://auth.anaplan.com/token/validate'
         auth_json2 = requests.get(
             url=auth_url,
@@ -39,7 +39,7 @@ def mainWork():
             
             ExportProcess = "Export_from_anaplan"
         
-            '''Getting Process from Anaplan'''
+            #Getting Process from Anaplan
             auth_url = 'https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes'
             auth_json3= requests.get(
                 url=auth_url,
@@ -53,7 +53,7 @@ def mainWork():
                     if ExportProcess == process['name']:
                         processID = process['id']
                         print("49" + processID)
-                        '''Starting the Process'''
+                        #Starting the Process
                         auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks"
                         auth_json4 = requests.post(
                             url=auth_url,
@@ -67,7 +67,7 @@ def mainWork():
                         if auth_json4['status']['message'] == 'Success':
                             taskID = auth_json4['task']['taskId']
                             print("63"+taskID)
-                            '''Checking the Status of the Process'''
+                            #Checking the Status of the Process
                             Flag = True
                             while Flag:
                                 auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks/{taskID}"
@@ -86,7 +86,7 @@ def mainWork():
                                     print("Complete")
                                     Flag = False
                             
-            '''Get files from anaplan'''
+            #Get files from anaplan
             url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/files/"
             getFileData = requests.get(
                 url = url,
@@ -206,7 +206,7 @@ def mainWork():
                         if fileCompleteResponse['status']['message'] == "Success":
                             print(f"{tempFileName} started MARKED as complete")
             
-            '''Getting Process from Anaplan'''
+            #Getting Process from Anaplan
             auth_url = 'https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes'
             auth_json3= requests.get(
                 url=auth_url,
@@ -220,7 +220,7 @@ def mainWork():
                     if "Import_to_anaplan" == process['name']:
                         processID = process['id']
                         print("185" + processID)
-                        '''Starting the Process'''
+                        #Starting the Process
                         auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks"
                         auth_json4 = requests.post(
                             url=auth_url,
@@ -234,7 +234,7 @@ def mainWork():
                         if auth_json4['status']['message'] == 'Success':
                             taskID = auth_json4['task']['taskId']
                             print("199"+taskID)
-                            '''Checking the Status of the Process'''
+                            #Checking the Status of the Process
                             Flag = True
                             while Flag:
                                 auth_url = f"https://api.anaplan.com/2/0/workspaces/8a868cdc7bd6c9ae017be5b938c83112/models/8B4052CB2DBE4E6AAEF8E96B968EFCCD/processes/{processID}/tasks/{taskID}"
